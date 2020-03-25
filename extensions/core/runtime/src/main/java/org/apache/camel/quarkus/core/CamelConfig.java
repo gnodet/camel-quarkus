@@ -44,6 +44,12 @@ public class CamelConfig {
     @ConfigItem
     public RuntimeCatalogConfig runtimeCatalog;
 
+    /**
+     * Build time configuration options for logging framework.
+     */
+    @ConfigItem
+    public LogConfig log;
+
     @ConfigGroup
     public static class MainConfig {
         /**
@@ -55,6 +61,13 @@ public class CamelConfig {
          */
         @ConfigItem(defaultValue = "true")
         public boolean enabled;
+
+        /**
+         * If {@code true}, the camel context will be started at initialization time
+         * to boot up faster.
+         */
+        @ConfigItem
+        public boolean lightweight;
 
         /**
          * Build time configuration options for routes discovery.
@@ -221,5 +234,19 @@ public class CamelConfig {
          */
         @ConfigItem(defaultValue = "true")
         public boolean models;
+    }
+
+    @ConfigGroup
+    public static class LogConfig {
+        /**
+         * Disable Zip compression for log rotator
+         */
+        @ConfigItem(defaultValue = "false")
+        public boolean disableZipLogCompression;
+        /**
+         * Disable GZip compression for log rotator
+         */
+        @ConfigItem(defaultValue = "false")
+        public boolean disableGzipLogCompression;
     }
 }

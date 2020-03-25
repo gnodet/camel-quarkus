@@ -32,6 +32,7 @@ import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.NativeImageResourceBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveMethodBuildItem;
+import io.quarkus.deployment.builditem.nativeimage.RuntimeReinitializedClassBuildItem;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Component;
 import org.apache.camel.Consumer;
@@ -82,7 +83,7 @@ class NativeImageProcessor {
                 PropertiesComponent.class,
                 DataFormat.class);
 
-        @BuildStep
+        //        @BuildStep
         void reflectiveItems(
                 CombinedIndexBuildItem combinedIndex,
                 BuildProducer<ReflectiveClassBuildItem> reflectiveClass,
@@ -135,7 +136,7 @@ class NativeImageProcessor {
 
         }
 
-        @BuildStep
+        //        @BuildStep
         void camelServices(
                 List<CamelServiceBuildItem> camelServices,
                 BuildProducer<ReflectiveClassBuildItem> reflectiveClass) {
@@ -225,16 +226,29 @@ class NativeImageProcessor {
             // to bind beans to the registry
             //
             camelRoutesBuilders.forEach(dotName -> {
-                reflectiveClass.produce(new ReflectiveClassBuildItem(true, true, dotName.toString()));
+                reflectiveClass.produce(new ReflectiveClassBuildItem(false, false, dotName.toString()));
             });
 
-            reflectiveClass.produce(new ReflectiveClassBuildItem(
-                    true,
-                    false,
-                    org.apache.camel.main.DefaultConfigurationProperties.class,
-                    org.apache.camel.main.MainConfigurationProperties.class,
-                    org.apache.camel.main.HystrixConfigurationProperties.class,
-                    org.apache.camel.main.RestConfigurationProperties.class));
+            //            reflectiveClass.produce(new ReflectiveClassBuildItem(
+            //                    true,
+            //                    false,
+            //                    org.apache.camel.main.DefaultConfigurationProperties.class,
+            //                    org.apache.camel.main.MainConfigurationProperties.class,
+            //                    org.apache.camel.main.HystrixConfigurationProperties.class,
+            //                    org.apache.camel.main.RestConfigurationProperties.class));
+        }
+    }
+
+    @BuildStep
+    void process(BuildProducer<RuntimeReinitializedClassBuildItem> reinitialized) {
+        for (String s : Arrays.asList(
+                "sun.security.jca.JCAUtil",
+                "sun.security.jca.JCAUtil$CachedSecureRandomHolder",
+                "sun.security.provider.SecureRandom$SeederHolder",
+                "sun.security.provider.SeedGenerator",
+                "java.security.SecureRandom",
+                "java.net.DefaultDatagramSocketImplFactory")) {
+            reinitialized.produce(new RuntimeReinitializedClassBuildItem(s));
         }
     }
 }

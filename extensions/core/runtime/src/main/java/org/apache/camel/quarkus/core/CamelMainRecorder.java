@@ -36,10 +36,12 @@ public class CamelMainRecorder {
     }
 
     public RuntimeValue<CamelMain> createCamelMain(
+            CamelConfig camelConfig,
             RuntimeValue<CamelContext> runtime,
             RuntimeValue<RoutesCollector> routesCollector,
             BeanContainer container) {
         CamelMain main = new CamelMain();
+        main.getMainConfigurationProperties().setLightweight(camelConfig.main.lightweight);
         main.setRoutesCollector(routesCollector.getValue());
         main.setCamelContext(runtime.getValue());
         main.addMainListener(new CamelMainEventDispatcher());
@@ -93,8 +95,15 @@ public class CamelMainRecorder {
         });
 
         try {
-            main.getValue().init();
             main.getValue().start();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void startImmutable(RuntimeValue<CamelMain> main) {
+        try {
+            main.getValue().startImmutable();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

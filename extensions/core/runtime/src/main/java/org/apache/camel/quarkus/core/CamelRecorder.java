@@ -20,7 +20,7 @@ import io.quarkus.arc.runtime.BeanContainer;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import org.apache.camel.CamelContext;
-import org.apache.camel.catalog.RuntimeCamelCatalog;
+import org.apache.camel.impl.lw.ImmutableCamelContext;
 import org.apache.camel.model.ValidateDefinition;
 import org.apache.camel.model.validator.PredicateValidatorDefinition;
 import org.apache.camel.quarkus.core.FastFactoryFinderResolver.Builder;
@@ -69,13 +69,13 @@ public class CamelRecorder {
             String version,
             CamelConfig config) {
 
-        FastCamelContext context = new FastCamelContext(
+        FastImmutableCamelContext context = new FastImmutableCamelContext(
                 factoryFinderResolver.getValue(),
                 version,
                 xmlLoader.getValue(),
                 xmlModelDumper.getValue());
 
-        context.setDefaultExtension(RuntimeCamelCatalog.class, () -> new CamelRuntimeCatalog(config.runtimeCatalog));
+        context.setRuntimeCamelCatalog(new CamelRuntimeCatalog(config.runtimeCatalog));
         context.setRegistry(registry.getValue());
         context.setTypeConverterRegistry(typeConverterRegistry.getValue());
         context.setLoadTypeConverters(false);
@@ -149,5 +149,23 @@ public class CamelRecorder {
 
     public RuntimeValue<FactoryFinderResolver> factoryFinderResolver(RuntimeValue<Builder> builder) {
         return new RuntimeValue<>(builder.getValue().build());
+    }
+
+    public static class FastImmutableCamelContext extends ImmutableCamelContext {
+        public FastImmutableCamelContext(FactoryFinderResolver factoryFinderResolver, String version,
+                XMLRoutesDefinitionLoader xmlLoader, ModelToXMLDumper modelDumper) {
+            super((CamelContext) null);
+            delegate = new FastCamelContextWithRef(FastImmutableCamelContext.this,
+                    factoryFinderResolver, version,
+                    xmlLoader, modelDumper);
+        }
+
+        static class FastCamelContextWithRef extends FastCamelContext {
+            public FastCamelContextWithRef(CamelContext reference, FactoryFinderResolver factoryFinderResolver, String version,
+                    XMLRoutesDefinitionLoader xmlLoader, ModelToXMLDumper modelDumper) {
+                super(reference, factoryFinderResolver, version, xmlLoader, modelDumper);
+                disableJMX();
+            }
+        }
     }
 }

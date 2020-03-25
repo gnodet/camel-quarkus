@@ -24,6 +24,7 @@ import org.apache.camel.CamelContextAware;
 import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.RoutesBuilder;
+import org.apache.camel.impl.lw.ImmutableCamelContext;
 import org.apache.camel.main.BaseMainSupport;
 import org.apache.camel.main.MainConfigurationProperties;
 import org.apache.camel.main.MainListener;
@@ -35,9 +36,22 @@ import org.slf4j.LoggerFactory;
 public class CamelMain extends BaseMainSupport implements CamelContextAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(CamelMain.class);
 
+    public CamelMain() {
+    }
+
     @Override
     public void setCamelContext(CamelContext camelContext) {
         this.camelContext = camelContext;
+    }
+
+    public void makeImmutable() {
+        if (camelContext instanceof ImmutableCamelContext) {
+            ((ImmutableCamelContext) camelContext).makeImmutable();
+        }
+    }
+
+    public void startImmutable() {
+        ((ImmutableCamelContext) camelContext).startImmutable();
     }
 
     @Override
@@ -47,10 +61,19 @@ public class CamelMain extends BaseMainSupport implements CamelContextAware {
         }
 
         postProcessCamelContext(getCamelContext());
-        getCamelContext().start();
+        if (camelContext instanceof ImmutableCamelContext) {
+            makeImmutable();
+        } else {
+            getCamelContext().start();
+        }
 
         for (MainListener listener : listeners) {
             listener.afterStart(this);
+        }
+
+        if (!getMainConfigurationProperties().isLightweight()) {
+            routesCollector = null;
+            routeBuilders = null;
         }
     }
 
@@ -111,4 +134,5 @@ public class CamelMain extends BaseMainSupport implements CamelContextAware {
     MainConfigurationProperties getMainConfigurationProperties() {
         return mainConfigurationProperties;
     }
+
 }
