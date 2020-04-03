@@ -156,6 +156,12 @@ class BuildProcessor {
                     "META-INF/services/org/apache/camel/language/*",
                     "META-INF/services/org/apache/camel/dataformat/*",
                     "META-INF/services/org/apache/camel/cron/*"));
+
+            services.produce(new CamelServicePatternBuildItem(
+                    CamelServiceDestination.DISCOVERY,
+                    false,
+                    "META-INF/services/org/apache/camel/configurer/avro-component",
+                    "META-INF/services/org/apache/camel/configurer/avro-endpoint"));
         }
 
         @BuildStep

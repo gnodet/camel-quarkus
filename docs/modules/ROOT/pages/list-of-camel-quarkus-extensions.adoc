@@ -18,7 +18,7 @@ In case you are missing some Camel feature in the list:
 == Camel Components
 
 // components: START
-Number of Camel components: 147 in 112 JAR artifacts (0 deprecated)
+Number of Camel components: 143 in 108 JAR artifacts (0 deprecated)
 
 [width="100%",cols="4,1,1,5",options="header"]
 |===
@@ -41,7 +41,7 @@ Level | Since | Description
 `amqp:destinationType:destinationName` | Native +
  Stable | 1.0.0-M6 | Messaging with AMQP protocol using Apache QPid Client.
 
-| link:https://camel.apache.org/components/latest/avro-component.html[Avro] (camel-quarkus-avro) +
+| link:https://camel.apache.org/components/latest/avro-component.html[Avro] (camel-quarkus-avro-rpc) +
 `avro:transport:host:port/messageName` | JVM +
  Preview | 1.0.0-M6 | Working with Apache Avro for data serialization.
 
@@ -205,10 +205,6 @@ Level | Since | Description
 `couchdb:protocol:hostname:port/database` | Native +
  Stable | 1.0.0-M6 | The couchdb component is used for integrate with CouchDB databases.
 
-| link:https://camel.apache.org/components/latest/cron-component.html[Cron] (camel-quarkus-cron) +
-`cron:name` | Native +
- Stable | 1.0.0-M6 | Camel Cron Component
-
 | link:https://camel.apache.org/components/latest/dataformat-component.html[Data Format] (camel-quarkus-dataformat) +
 `dataformat:name:operation` | Native +
  Stable | 0.4.0 | The dataformat component is used for working with Data Formats as if it was a regular Component supporting Endpoints and URIs.
@@ -248,10 +244,6 @@ Level | Since | Description
 | xref:extensions/fhir.adoc[FHIR] (camel-quarkus-fhir) +
 `fhir:apiName/methodName` | Native +
  Stable | 0.3.0 | The fhir component is used for working with the FHIR protocol (health care).
-
-| link:https://camel.apache.org/components/latest/file-component.html[File] (camel-quarkus-file) +
-`file:directoryName` | Native +
- Stable | 0.4.0 | The file component is used for reading or writing files.
 
 | xref:extensions/file-watch.adoc[File Watch] (camel-quarkus-file-watch) +
 `file-watch:path` | Native +
@@ -299,7 +291,7 @@ Level | Since | Description
 
 | link:https://camel.apache.org/components/latest/google-pubsub-component.html[Google Pubsub] (camel-quarkus-google-pubsub) +
 `google-pubsub:projectId:destinationName` | JVM +
- Preview | 1.0.0-M6 | Messaging client for Google Cloud Platform PubSub Service
+ Preview | 1.0.0-M6 | Messaging client for Google Cloud Platform PubSub Service Built on top of the Google Cloud Pub/Sub libraries.
 
 | link:https://camel.apache.org/components/latest/google-sheets-component.html[Google Sheets] (camel-quarkus-google-sheets) +
 `google-sheets:apiName/methodName` | Native +
@@ -316,10 +308,6 @@ Level | Since | Description
 | link:https://camel.apache.org/components/latest/grpc-component.html[gRPC] (camel-quarkus-grpc) +
 `grpc:host:port/service` | JVM +
  Preview | 1.0.0-M6 | The gRPC component allows to call and expose remote procedures via HTTP/2 with protobuf dataformat
-
-| xref:extensions/http.adoc[HTTP] (camel-quarkus-http) +
-`http:httpUri` | Native +
- Stable | 1.0.0-M3 | For calling out to external HTTP servers using Apache HTTP Client 4.x.
 
 | link:https://camel.apache.org/components/latest/infinispan-component.html[Infinispan] (camel-quarkus-infinispan) +
 `infinispan:cacheName` | Native +
@@ -545,10 +533,6 @@ Level | Since | Description
 `servicenow:instanceName` | Native +
  Stable | 1.0.0-M6 | The servicenow component is used to integrate Camel with ServiceNow cloud services.
 
-| link:https://camel.apache.org/components/latest/servlet-component.html[Servlet] (camel-quarkus-servlet) +
-`servlet:contextPath` | Native +
- Stable | 0.2.0 | To use a HTTP Servlet as entry for Camel routes when running in a servlet container.
-
 | link:https://camel.apache.org/components/latest/sftp-component.html[SFTP] (camel-quarkus-ftp) +
 `sftp:host:port/directoryName` | Native +
  Stable | 1.0.0-M1 | The sftp (FTP over SSH) component is used for uploading or downloading files from SFTP servers.
@@ -619,7 +603,7 @@ Level | Since | Description
 == Camel Data Formats
 
 // dataformats: START
-Number of Camel data formats: 26 in 21 JAR artifacts (0 deprecated)
+Number of Camel data formats: 24 in 19 JAR artifacts (0 deprecated)
 
 [width="100%",cols="4,1,1,5",options="header"]
 |===
@@ -659,14 +643,8 @@ Level | Since | Description
 | link:https://camel.apache.org/components/latest/jacksonxml-dataformat.html[JacksonXML] (camel-quarkus-jacksonxml) | Native +
  Stable | 1.0.0-M5 | JacksonXML data format is used for unmarshal a XML payload to POJO or to marshal POJO back to XML payload.
 
-| link:https://camel.apache.org/components/latest/jaxb-dataformat.html[JAXB] (camel-quarkus-jaxb) | Native +
- Stable | 1.0.0-M5 | JAXB data format uses the JAXB2 XML marshalling standard to unmarshal an XML payload into Java objects or to marshal Java objects into an XML payload.
-
 | link:https://camel.apache.org/components/latest/json-gson-dataformat.html[JSon GSon] (camel-quarkus-gson) | Native +
  Stable | 1.0.0-M4 | JSon data format is used for unmarshal a JSon payload to POJO or to marshal POJO back to JSon payload.
-
-| link:https://camel.apache.org/components/latest/json-jackson-dataformat.html[JSon Jackson] (camel-quarkus-jackson) | Native +
- Stable | 0.3.0 | JSon data format is used for unmarshal a JSon payload to POJO or to marshal POJO back to JSon payload.
 
 | link:https://camel.apache.org/components/latest/json-johnzon-dataformat.html[JSon Johnzon] (camel-quarkus-johnzon) | Native +
  Stable | 1.0.0-M5 | JSon data format is used for unmarshal a JSon payload to POJO or to marshal POJO back to JSon payload.
@@ -709,7 +687,7 @@ Level | Since | Description
 == Camel Languages
 
 // languages: START
-Number of Camel languages: 13 in 7 JAR artifacts (0 deprecated)
+Number of Camel languages: 6 in 6 JAR artifacts (0 deprecated)
 
 [width="100%",cols="4,1,1,5",options="header"]
 |===
@@ -719,35 +697,14 @@ Level | Since | Description
 | link:https://camel.apache.org/components/latest/bean-language.html[Bean method] (camel-quarkus-bean) | Native +
  Stable | 0.2.0 | To use a Java bean (aka method call) in Camel expressions or predicates.
 
-| link:https://camel.apache.org/components/latest/constant-language.html[Constant] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | To use a constant value in Camel expressions or predicates. Important: this is a fixed constant value that is only set once during starting up the route, do not use this if you want dynamic values during routing.
-
-| link:https://camel.apache.org/components/latest/exchangeProperty-language.html[ExchangeProperty] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | To use a Camel Exchange property in expressions or predicates.
-
-| link:https://camel.apache.org/components/latest/file-language.html[File] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | For expressions and predicates using the file/simple language.
-
 | link:https://camel.apache.org/components/latest/groovy-language.html[Groovy] (camel-quarkus-groovy) | JVM +
  Preview | 1.0.0-M6 | To use Groovy scripts in Camel expressions or predicates.
-
-| link:https://camel.apache.org/components/latest/header-language.html[Header] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | To use a Camel Message header in expressions or predicates.
 
 | link:https://camel.apache.org/components/latest/jsonpath-language.html[JsonPath] (camel-quarkus-jsonpath) | Native +
  Stable | 1.0.0-M3 | To use JsonPath in Camel expressions or predicates.
 
 | link:https://camel.apache.org/components/latest/ognl-language.html[OGNL] (camel-quarkus-ognl) | JVM +
  Preview | 1.0.0-M6 | To use OGNL scripts in Camel expressions or predicates.
-
-| link:https://camel.apache.org/components/latest/ref-language.html[Ref] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | Reference to an existing Camel expression or predicate, which is looked up from the Camel registry.
-
-| link:https://camel.apache.org/components/latest/simple-language.html[Simple] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | To use Camels built-in Simple language in Camel expressions or predicates.
-
-| link:https://camel.apache.org/components/latest/tokenize-language.html[Tokenize] (camel-quarkus-core) | Native +
- Stable | 0.2.0 | To use Camel message body or header with a tokenizer in Camel expressions or predicates.
 
 | link:https://camel.apache.org/components/latest/xtokenize-language.html[XML Tokenize] (camel-quarkus-xml-jaxp) | Native +
  Stable | 1.0.0-M5 | To use Camel message body or header with a XML tokenizer in Camel expressions or predicates.
@@ -760,26 +717,44 @@ Level | Since | Description
 == Miscellaneous Extensions
 
 // others: START
-Number of miscellaneous extensions: 12 in 12 JAR artifacts (0 deprecated)
+Number of miscellaneous extensions: 19 in 19 JAR artifacts (0 deprecated)
 
 [width="100%",cols="4,1,1,5",options="header"]
 |===
 | Extension | Target Level | Since | Description
 
 | (camel-quarkus-attachments) | Native +
- Stable | 0.3.0 | Java Attachments support for Camel Message
+ Stable | 0.3.0 | Support for attachments on Camel messages.
 
 | (camel-quarkus-caffeine-lrucache) | Native +
  Stable | 1.0.0-M5 | Provides an implementation of the LRUCacheFactory based on Caffeine
 
+| (camel-quarkus-core) | Native +
+ Stable | 0.2.0 | The Camel Quarkus core module
+
 | (camel-quarkus-core-cloud) | Native +
  Stable | 0.2.0 | The Camel Quarkus core cloud module
+
+| (camel-quarkus-cron) | Native +
+ Stable | 1.0.0-M6 | Camel Cron Component
 
 | (camel-quarkus-endpointdsl) | Native +
  Stable | 1.0.0-M3 | camel-quarkus-endpointdsl
 
+| (camel-quarkus-file) | Native +
+ Stable | 0.4.0 | The file component provides access to the file system.
+
+| xref:extensions/http.adoc[camel-quarkus-http]  | Native +
+ Stable | 1.0.0-M3 | The http component provides support for the HTTP/HTTPS protocols.
+
 | (camel-quarkus-hystrix) | Native +
  Stable | 1.0.0-M1 | Circuit Breaker EIP using Netflix Hystrix
+
+| (camel-quarkus-jackson) | Native +
+ Stable | 0.3.0 | Provides support for the Jackson dataformat.
+
+| (camel-quarkus-jaxb) | Native +
+ Stable | 1.0.0-M5 | The jaxb extensions provides JAXB support for Camel.
 
 | (camel-quarkus-kotlin) | Native +
  Stable | 1.0.0-M3 | camel-quarkus-kotlin
@@ -795,6 +770,9 @@ Number of miscellaneous extensions: 12 in 12 JAR artifacts (0 deprecated)
 
 | (camel-quarkus-reactive-executor) | Native +
  Stable | 0.3.0 | Reactive Executor for camel-core using Vert.x
+
+| (camel-quarkus-servlet) | Native +
+ Stable | 0.2.0 | Camel servlet transport support.
 
 | (camel-quarkus-xml-io) | Native +
  Stable | 1.0.0-M5 | An XML stack for parsing XML route definitions. A fast an light weight alternative to camel-quarkus-xml-jaxp
