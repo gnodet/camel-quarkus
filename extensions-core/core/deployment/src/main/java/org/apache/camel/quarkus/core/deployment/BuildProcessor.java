@@ -40,6 +40,7 @@ import io.quarkus.deployment.annotations.Overridable;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.ApplicationArchivesBuildItem;
 import io.quarkus.deployment.builditem.CombinedIndexBuildItem;
+import io.quarkus.deployment.builditem.IndexDependencyBuildItem;
 import io.quarkus.deployment.builditem.ServiceStartBuildItem;
 import io.quarkus.deployment.builditem.ShutdownContextBuildItem;
 import io.quarkus.deployment.recording.RecorderContext;
@@ -100,6 +101,12 @@ class BuildProcessor {
      * Build steps related to camel core.
      */
     public static class Core {
+        // TODO: remove when https://issues.apache.org/jira/browse/CAMEL-14851 is fixed
+        @BuildStep
+        IndexDependencyBuildItem endpointDslIndex() {
+            return new IndexDependencyBuildItem("org.apache.camel", "camel-endpointdsl");
+        }
+
         @BuildStep
         BeanRegistrationPhaseBuildItem.BeanConfiguratorBuildItem containerBeans(
                 BeanRegistrationPhaseBuildItem beanRegistrationPhase,
