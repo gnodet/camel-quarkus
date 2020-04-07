@@ -65,7 +65,7 @@
         <retrofit.version>2.5.0</retrofit.version>
         <!-- Keep spring.version aligned with the version used by Camel -->
         <spring.version>5.2.3.RELEASE</spring.version>
-        <snakeyaml.version>1.25</snakeyaml.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
         <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.12.0</xerces.version>
         <xstream.version>1.4.11</xstream.version>
