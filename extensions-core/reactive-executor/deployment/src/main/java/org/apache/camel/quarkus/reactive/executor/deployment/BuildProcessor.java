@@ -21,6 +21,7 @@ import io.quarkus.deployment.annotations.ExecutionTime;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.vertx.deployment.VertxBuildItem;
 import org.apache.camel.quarkus.core.Flags;
+import org.apache.camel.quarkus.core.deployment.CamelInitializedReactiveExecutorBuildItem;
 import org.apache.camel.quarkus.core.deployment.CamelReactiveExecutorBuildItem;
 import org.apache.camel.quarkus.reactive.executor.ReactiveExecutorRecorder;
 
@@ -33,8 +34,9 @@ public class BuildProcessor {
 
     @Record(value = ExecutionTime.RUNTIME_INIT, optional = true)
     @BuildStep(onlyIf = Flags.MainEnabled.class)
-    void initReactiveExecutor(ReactiveExecutorRecorder recorder, CamelReactiveExecutorBuildItem executor,
-            VertxBuildItem vertx) {
+    CamelInitializedReactiveExecutorBuildItem initReactiveExecutor(
+            ReactiveExecutorRecorder recorder, CamelReactiveExecutorBuildItem executor, VertxBuildItem vertx) {
         recorder.initReactiveExecutor(executor.getInstance(), vertx.getVertx());
+        return new CamelInitializedReactiveExecutorBuildItem(executor.getInstance());
     }
 }

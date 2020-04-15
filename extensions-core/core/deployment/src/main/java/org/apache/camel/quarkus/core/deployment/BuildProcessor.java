@@ -546,6 +546,14 @@ class BuildProcessor {
             return new CamelReactiveExecutorBuildItem(recorder.createReactiveExecutor());
         }
 
+        @Overridable
+        @Record(value = ExecutionTime.RUNTIME_INIT, optional = true)
+        @BuildStep(onlyIf = Flags.MainEnabled.class)
+        CamelInitializedReactiveExecutorBuildItem initReactiveExecutor(
+                CamelMainRecorder recorder, CamelReactiveExecutorBuildItem executor) {
+            return new CamelInitializedReactiveExecutorBuildItem(executor.getInstance());
+        }
+
         /**
          * This method is responsible to configure camel-main during static init phase which means
          * discovering routes, listeners and services that need to be bound to the camel-main.
@@ -601,7 +609,7 @@ class BuildProcessor {
         void init(
                 CamelMainRecorder recorder,
                 CamelMainBuildItem main,
-                CamelReactiveExecutorBuildItem executor,
+                CamelInitializedReactiveExecutorBuildItem executor,
                 ShutdownContextBuildItem shutdown) {
 
             recorder.setReactiveExecutor(main.getInstance(), executor.getInstance());
