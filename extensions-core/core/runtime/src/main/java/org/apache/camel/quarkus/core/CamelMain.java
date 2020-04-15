@@ -58,6 +58,11 @@ public class CamelMain extends BaseMainSupport implements CamelContextAware {
         for (MainListener listener : listeners) {
             listener.afterStart(this);
         }
+
+        if (getMainConfigurationProperties().isLightweight()) {
+            routesCollector = null;
+            routeBuilders = null;
+        }
     }
 
     @Override
