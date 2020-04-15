@@ -36,10 +36,14 @@ public class PlatformHttpRecorder {
         return new RuntimeValue<>(new QuarkusPlatformHttpEngine(router.getValue(), handlers, uploadAttacher.getValue()));
     }
 
-    public RuntimeValue<PlatformHttpComponent> createComponent(RuntimeValue<PlatformHttpEngine> engine) {
+    public RuntimeValue<PlatformHttpComponent> createComponent() {
         PlatformHttpComponent component = new PlatformHttpComponent();
-        component.setEngine(engine.getValue());
-
         return new RuntimeValue<>(component);
+    }
+
+    public RuntimeValue<PlatformHttpComponent> initComponent(
+            RuntimeValue<PlatformHttpComponent> component, RuntimeValue<PlatformHttpEngine> engine) {
+        component.getValue().setEngine(engine.getValue());
+        return new RuntimeValue<>(component.getValue());
     }
 }

@@ -28,7 +28,9 @@ import org.apache.camel.component.platform.http.PlatformHttpComponent;
 import org.apache.camel.component.platform.http.PlatformHttpConstants;
 import org.apache.camel.quarkus.component.platform.http.runtime.PlatformHttpRecorder;
 import org.apache.camel.quarkus.component.platform.http.runtime.QuarkusPlatformHttpEngine;
+import org.apache.camel.quarkus.core.deployment.CamelBeanBuildItem;
 import org.apache.camel.quarkus.core.deployment.CamelRuntimeBeanBuildItem;
+import org.apache.camel.quarkus.core.deployment.CamelServiceInitBuildItem;
 import org.apache.camel.quarkus.core.deployment.CamelServiceFilter;
 import org.apache.camel.quarkus.core.deployment.CamelServiceFilterBuildItem;
 import org.apache.camel.quarkus.core.deployment.UploadAttacherBuildItem;
@@ -65,6 +67,12 @@ class PlatformHttpProcessor {
                         uploadAttacher.getInstance()));
     }
 
+    @Record(ExecutionTime.STATIC_INIT)
+    @BuildStep
+    PlatformHttpComponentBuildItem platformHttpComponent(PlatformHttpRecorder recorder) {
+        return new PlatformHttpComponentBuildItem(recorder.createComponent());
+    }
+
     @BuildStep
     CamelRuntimeBeanBuildItem platformHttpEngineBean(PlatformHttpEngineBuildItem engine) {
         return new CamelRuntimeBeanBuildItem(
@@ -73,12 +81,22 @@ class PlatformHttpProcessor {
                 engine.getInstance());
     }
 
-    @Record(ExecutionTime.RUNTIME_INIT)
+    @Record(ExecutionTime.STATIC_INIT)
     @BuildStep
-    CamelRuntimeBeanBuildItem platformHttpComponentBean(PlatformHttpRecorder recorder, PlatformHttpEngineBuildItem engine) {
-        return new CamelRuntimeBeanBuildItem(
+    CamelBeanBuildItem platformHttpComponentBean(PlatformHttpRecorder recorder, PlatformHttpComponentBuildItem component) {
+        return new CamelBeanBuildItem(
                 PlatformHttpConstants.PLATFORM_HTTP_COMPONENT_NAME,
                 PlatformHttpComponent.class.getName(),
-                recorder.createComponent(engine.getInstance()));
+                component.getInstance());
+    }
+
+    @Record(ExecutionTime.RUNTIME_INIT)
+    @BuildStep
+    CamelServiceInitBuildItem initPlatformHttpComponentBean(
+            PlatformHttpRecorder recorder,
+            PlatformHttpComponentBuildItem component,
+            PlatformHttpEngineBuildItem engine) {
+        recorder.initComponent(component.getInstance(), engine.getInstance());
+        return new CamelServiceInitBuildItem(PlatformHttpConstants.PLATFORM_HTTP_COMPONENT_NAME);
     }
 }

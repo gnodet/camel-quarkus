@@ -610,7 +610,8 @@ class BuildProcessor {
                 CamelMainRecorder recorder,
                 CamelMainBuildItem main,
                 CamelInitializedReactiveExecutorBuildItem executor,
-                ShutdownContextBuildItem shutdown) {
+                ShutdownContextBuildItem shutdown,
+                List<CamelServiceInitBuildItem> initList) {
 
             recorder.setReactiveExecutor(main.getInstance(), executor.getInstance());
             recorder.init(shutdown, main.getInstance());
