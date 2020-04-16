@@ -78,6 +78,14 @@ public class FastCamelContext extends AbstractCamelContext implements CatalogCam
 
     }
 
+    /**
+     * Returns the outer CamelContext to be used for references
+     * when the FastCamelContext is used inside a FastLightweightCamelContext.
+     * This allows the LightweightCamelContext to switch the inner context
+     * to an immutable and lightweight CamelContext.
+     * 
+     * @see CamelRecorder.FastLightweightCamelContext#init()
+     */
     @Override
     public CamelContext getCamelContextReference() {
         return reference;
