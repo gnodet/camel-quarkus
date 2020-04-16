@@ -69,42 +69,33 @@ public class CamelRecorder {
             String version,
             CamelConfig config) {
 
+        final ExtendedCamelContext context;
         if (config.main.lightweight) {
-            FastLightweightCamelContext context = new FastLightweightCamelContext(
+            context = new FastLightweightCamelContext(
                     factoryFinderResolver.getValue(),
                     version,
                     xmlLoader.getValue(),
                     xmlModelDumper.getValue());
-            context.setRuntimeCamelCatalog(new CamelRuntimeCatalog(config.runtimeCatalog));
-            context.setRegistry(registry.getValue());
-            context.setTypeConverterRegistry(typeConverterRegistry.getValue());
-            context.setLoadTypeConverters(false);
-            context.setModelJAXBContextFactory(contextFactory.getValue());
-            context.build();
-
-            // register to the container
-            beanContainer.instance(CamelProducers.class).setContext(context);
-
-            return new RuntimeValue<>(context);
         } else {
-            FastCamelContext context = new FastCamelContext(
+            context = new FastCamelContext(
                     null,
                     factoryFinderResolver.getValue(),
                     version,
                     xmlLoader.getValue(),
                     xmlModelDumper.getValue());
-            context.setRuntimeCamelCatalog(new CamelRuntimeCatalog(config.runtimeCatalog));
-            context.setRegistry(registry.getValue());
-            context.setTypeConverterRegistry(typeConverterRegistry.getValue());
-            context.setLoadTypeConverters(false);
-            context.setModelJAXBContextFactory(contextFactory.getValue());
-            context.build();
-
-            // register to the container
-            beanContainer.instance(CamelProducers.class).setContext(context);
-
-            return new RuntimeValue<>(context);
         }
+
+        context.setRuntimeCamelCatalog(new CamelRuntimeCatalog(config.runtimeCatalog));
+        context.setRegistry(registry.getValue());
+        context.setTypeConverterRegistry(typeConverterRegistry.getValue());
+        context.setLoadTypeConverters(false);
+        context.setModelJAXBContextFactory(contextFactory.getValue());
+        context.build();
+
+        // register to the container
+        beanContainer.instance(CamelProducers.class).setContext(context);
+
+        return new RuntimeValue<>(context);
     }
 
     public void customize(RuntimeValue<CamelContext> context, RuntimeValue<CamelContextCustomizer> contextCustomizer) {
