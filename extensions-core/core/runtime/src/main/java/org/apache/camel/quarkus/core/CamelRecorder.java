@@ -20,6 +20,7 @@ import io.quarkus.arc.runtime.BeanContainer;
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import org.apache.camel.CamelContext;
+import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.impl.lw.LightweightCamelContext;
 import org.apache.camel.model.ValidateDefinition;
 import org.apache.camel.model.validator.PredicateValidatorDefinition;
