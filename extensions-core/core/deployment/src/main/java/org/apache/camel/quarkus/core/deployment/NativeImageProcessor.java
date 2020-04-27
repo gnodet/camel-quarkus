@@ -99,7 +99,11 @@ public class NativeImageProcessor {
                     .map(view::getAllKnownImplementors)
                     .flatMap(Collection::stream)
                     .filter(CamelSupport::isPublic)
-                    .forEach(v -> reflectiveClass.produce(new ReflectiveClassBuildItem(true, false, v.name().toString())));
+                    .forEach(v -> reflectiveClass.produce(new ReflectiveClassBuildItem(false, false, v.name().toString())));
+            CAMEL_REFLECTIVE_CLASSES.stream()
+                    .map(Class::getName)
+                    .map(DotName::createSimple)
+                    .forEach(v -> reflectiveClass.produce(new ReflectiveClassBuildItem(true, false, v.toString())));
 
             DotName converter = DotName.createSimple(Converter.class.getName());
             List<ClassInfo> converterClasses = view.getAnnotations(converter)

@@ -52,25 +52,37 @@ class PlatformHttpProcessor {
         return new CamelServiceFilterBuildItem(CamelServiceFilter.forComponent("platform-http"));
     }
 
-    @Record(ExecutionTime.RUNTIME_INIT)
+    @Record(ExecutionTime.STATIC_INIT)
     @BuildStep
     PlatformHttpEngineBuildItem platformHttpEngine(
+            PlatformHttpRecorder recorder) {
+
+        return new PlatformHttpEngineBuildItem(recorder.createEngine());
+    }
+
+    @Record(ExecutionTime.RUNTIME_INIT)
+    @BuildStep
+    CamelServiceInitBuildItem initPlatformHttpEngine(
             PlatformHttpRecorder recorder,
+            PlatformHttpEngineBuildItem engine,
             VertxWebRouterBuildItem router,
             BodyHandlerBuildItem bodyHandler,
             UploadAttacherBuildItem uploadAttacher) {
 
-        return new PlatformHttpEngineBuildItem(
-                recorder.createEngine(
-                        router.getRouter(),
-                        Collections.singletonList(bodyHandler.getHandler()),
-                        uploadAttacher.getInstance()));
+        recorder.initEngine(
+                engine.getInstance(),
+                router.getRouter(),
+                Collections.singletonList(bodyHandler.getHandler()),
+                uploadAttacher.getInstance());
+        return new CamelServiceInitBuildItem("platform-http-engine");
     }
 
     @Record(ExecutionTime.STATIC_INIT)
     @BuildStep
-    PlatformHttpComponentBuildItem platformHttpComponent(PlatformHttpRecorder recorder) {
-        return new PlatformHttpComponentBuildItem(recorder.createComponent());
+    PlatformHttpComponentBuildItem platformHttpComponent(
+            PlatformHttpRecorder recorder,
+            PlatformHttpEngineBuildItem engine) {
+        return new PlatformHttpComponentBuildItem(recorder.createComponent(engine.getInstance()));
     }
 
     @BuildStep
@@ -90,13 +102,4 @@ class PlatformHttpProcessor {
                 component.getInstance());
     }
 
-    @Record(ExecutionTime.RUNTIME_INIT)
-    @BuildStep
-    CamelServiceInitBuildItem initPlatformHttpComponentBean(
-            PlatformHttpRecorder recorder,
-            PlatformHttpComponentBuildItem component,
-            PlatformHttpEngineBuildItem engine) {
-        recorder.initComponent(component.getInstance(), engine.getInstance());
-        return new CamelServiceInitBuildItem(PlatformHttpConstants.PLATFORM_HTTP_COMPONENT_NAME);
-    }
 }

@@ -96,8 +96,9 @@ public class CamelMainRecorder {
         main.getValue().init();
     }
 
-    public void start(RuntimeValue<CamelMain> main) {
+    public void start(RuntimeValue<CamelMain> main, RuntimeValue<RuntimeRegistry> registry) {
         try {
+            registry.getValue().startProxies();
             main.getValue().start();
         } catch (Exception e) {
             throw new RuntimeException(e);

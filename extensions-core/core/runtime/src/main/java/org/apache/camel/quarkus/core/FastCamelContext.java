@@ -100,6 +100,11 @@ public class FastCamelContext extends AbstractCamelContext implements CatalogCam
     }
 
     @Override
+    public List<StartupListener> getStartupListeners() {
+        return super.getStartupListeners();
+    }
+
+    @Override
     public String getVersion() {
         return version;
     }
