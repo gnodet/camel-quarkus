@@ -85,7 +85,7 @@ public class NativeImageProcessor {
                 PropertiesComponent.class,
                 DataFormat.class);
 
-        @BuildStep
+        @BuildStep(onlyIfNot = Flags.LightweightEnabled.class)
         void reflectiveItems(
                 CombinedIndexBuildItem combinedIndex,
                 BuildProducer<ReflectiveClassBuildItem> reflectiveClass,
@@ -142,7 +142,7 @@ public class NativeImageProcessor {
 
         }
 
-        @BuildStep
+        @BuildStep(onlyIfNot = Flags.LightweightEnabled.class)
         void camelServices(
                 List<CamelServiceBuildItem> camelServices,
                 BuildProducer<ReflectiveClassBuildItem> reflectiveClass) {
@@ -156,7 +156,7 @@ public class NativeImageProcessor {
         /*
          * Add camel catalog files to the native image.
          */
-        @BuildStep(onlyIf = Flags.RuntimeCatalogEnabled.class)
+        @BuildStep(onlyIf = Flags.RuntimeCatalogEnabled.class, onlyIfNot = Flags.LightweightEnabled.class)
         List<NativeImageResourceBuildItem> camelRuntimeCatalog(
                 CamelConfig config,
                 ApplicationArchivesBuildItem archives,
