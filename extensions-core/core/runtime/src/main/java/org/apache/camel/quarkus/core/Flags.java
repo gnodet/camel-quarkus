@@ -38,7 +38,7 @@ public final class Flags {
     public static final class LightweightEnabled implements BooleanSupplier {
         @Override
         public boolean getAsBoolean() {
-            return asBoolean("quarkus.camel.main.lightweight", true);
+            return asBoolean("quarkus.camel.main.lightweight", false);
         }
     }
 
